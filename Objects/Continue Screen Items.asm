@@ -4,7 +4,7 @@
 
 ContScrItem:
 		moveq	#0,d0
-		move.b	$24(a0),d0
+		move.b	ost_routine(a0),d0
 		move.w	CSI_Index(pc,d0.w),d1
 		jmp	CSI_Index(pc,d1.w)
 ; ===========================================================================
@@ -69,10 +69,10 @@ CSI_MiniSonicLoop:
 		move.l	#Map_ContScr,ost_mappings(a1)
 		move.w	#$551+tile_hi,ost_tile(a1)
 		move.b	#render_abs,ost_render(a1)
-		lea	$40(a1),a1
+		lea	SST_size(a1),a1
 		dbf	d1,CSI_MiniSonicLoop ; repeat for number of continues
 
-		lea	-$40(a1),a1
+		lea	-SST_size(a1),a1
 		move.b	d3,ost_subtype(a1)
 
 CSI_ChkDel:	; Routine 6
@@ -85,7 +85,7 @@ CSI_ChkDel:	; Routine 6
 		bne.s	CSI_Animate
 		tst.w	(v_ost_player+ost_x_vel).w ; is Sonic running?
 		bne.s	CSI_Delete	; if yes, goto delete
-		rts	
+		rts
 
 CSI_Animate:
 		move.b	(v_vblank_counter_byte).w,d0

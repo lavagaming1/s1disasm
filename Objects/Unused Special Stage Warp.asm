@@ -31,16 +31,16 @@ Van_Main:	; Routine 0
 		move.w	#120,ost_vanish_time(a0) ; set time for Sonic's disappearance to 2 seconds
 
 Van_RmvSonic:	; Routine 2
-		move.w	(v_ost_player+ost_x_pos).w,ost_x_pos(a0)
-		move.w	(v_ost_player+ost_y_pos).w,ost_y_pos(a0)
-		move.b	(v_ost_player+ost_status).w,ost_status(a0)
+		move.w	(v_ost_player+ost_x_pos).w,ost_x_pos(a0) ; copy player x pos  into the warp object 
+		move.w	(v_ost_player+ost_y_pos).w,ost_y_pos(a0)  ; copy player y pos  into the warp object
+		move.b	(v_ost_player+ost_status).w,ost_status(a0)    ; copy facing into the warp effect flipping
 		lea	(Ani_Vanish).l,a1
 		jsr	(AnimateSprite).l
-		cmpi.b	#id_frame_vanish_flash3,ost_frame(a0)
-		bne.s	@display
-		tst.b	(v_ost_player).w
-		beq.s	@display
-		move.b	#0,(v_ost_player).w ; remove Sonic
+		cmpi.b	#id_frame_vanish_flash3,ost_frame(a0) ; have we reached frame $3
+		bne.s	@display        ; if not display warp effect
+		tst.b	(v_ost_player).w   ; is sonic still loaded ?
+		beq.s	@display    ; if yes  then display object
+		move.b	#0,(v_ost_player).w ; remove Sonic 
 		sfx	sfx_Goal,0,0,0 ; play Special Stage "GOAL" sound
 
 	@display:
@@ -54,4 +54,4 @@ Van_LoadSonic:	; Routine 4
 		jmp	(DeleteObject).l
 
 	@wait:
-		rts	
+		rts
