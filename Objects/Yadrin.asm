@@ -27,7 +27,7 @@ loc_F82C:
 
 loc_F836:
 		moveq	#0,d0
-		rts	
+		rts
 ; End of function Yad_ChkWall
 
 ; ===========================================================================
@@ -59,15 +59,15 @@ Yad_Main:	; Routine 0
 		move.b	#$CC,ost_col_type(a0)
 		bsr.w	ObjectFall
 		bsr.w	FindFloorObj
-		tst.w	d1
-		bpl.s	locret_F89E
+		tst.w	d1   ; has the object collided with a floor ? (with collsion)
+		bpl.s	locret_F89E   ; if not then ignore
 		add.w	d1,ost_y_pos(a0) ; match object's position with the floor
 		move.w	#0,ost_y_vel(a0)
-		addq.b	#2,ost_routine(a0)
-		bchg	#status_xflip_bit,ost_status(a0)
+		addq.b	#2,ost_routine(a0)  ;go to Yad_Action
+		bchg	#status_xflip_bit,ost_status(a0)  ; set object flipping /facing
 
 	locret_F89E:
-		rts	
+		rts
 ; ===========================================================================
 
 Yad_Action:	; Routine 2
@@ -95,7 +95,7 @@ Yad_Move:
 		neg.w	ost_x_vel(a0)	; change direction
 
 	locret_F8E2:
-		rts	
+		rts
 ; ===========================================================================
 
 Yad_FixToFloor:
@@ -108,12 +108,12 @@ Yad_FixToFloor:
 		add.w	d1,ost_y_pos(a0) ; match object's position to the floor
 		bsr.w	Yad_ChkWall
 		bne.s	Yad_Pause
-		rts	
+		rts
 ; ===========================================================================
 
 Yad_Pause:
-		subq.b	#2,ost_routine2(a0)
+		subq.b	#2,ost_routine2(a0) ;go back to Yad_Move
 		move.w	#59,ost_yadrin_wait_time(a0) ; set pause time to 1 second
-		move.w	#0,ost_x_vel(a0)
-		move.b	#id_ani_yadrin_stand,ost_anim(a0)
-		rts	
+		move.w	#0,ost_x_vel(a0)     ; stop the object
+		move.b	#id_ani_yadrin_stand,ost_anim(a0)    ;set stopping anim
+		rts

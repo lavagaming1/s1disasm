@@ -28,8 +28,8 @@ ost_blz_wobble:		equ $3F	; wobble state as Eggman moves back & forth (1 byte inc
 Obj77_Main:	; Routine 0
 		move.w	#$1E10,ost_x_pos(a0)
 		move.w	#$5C0,ost_y_pos(a0)
-		move.w	ost_x_pos(a0),ost_blz_parent_x_pos(a0)
-		move.w	ost_y_pos(a0),ost_blz_parent_y_pos(a0)
+		move.w	ost_x_pos(a0),ost_blz_parent_x_pos(a0) ; get our x pos in game into ost_blz_parent_x_pos 
+		move.w	ost_y_pos(a0),ost_blz_parent_y_pos(a0) ; get our y pos in game into ost_blz_parent_y_pos
 		move.b	#$F,ost_col_type(a0)
 		move.b	#8,ost_col_property(a0) ; set number of hits to 8
 		move.b	#4,ost_priority(a0)
@@ -123,7 +123,7 @@ loc_17F7E:
 		move.b	#$F,ost_col_type(a0)
 
 locret_17F8C:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_17F8E:
@@ -134,7 +134,7 @@ loc_17F92:
 		moveq	#100,d0
 		bsr.w	AddPoints
 		move.b	#-1,ost_blz_wait_time+1(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_17FA0:
