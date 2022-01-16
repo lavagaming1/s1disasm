@@ -34,13 +34,13 @@ Van_RmvSonic:	; Routine 2
 		move.w	(v_ost_player+ost_x_pos).w,ost_x_pos(a0) ; copy player x pos  into the warp object 
 		move.w	(v_ost_player+ost_y_pos).w,ost_y_pos(a0)  ; copy player y pos  into the warp object
 		move.b	(v_ost_player+ost_status).w,ost_status(a0)    ; copy facing into the warp effect flipping
-		lea	(Ani_Vanish).l,a1
+		lea	(Ani_Vanish).l,a1  
 		jsr	(AnimateSprite).l
 		cmpi.b	#id_frame_vanish_flash3,ost_frame(a0) ; have we reached frame $3
 		bne.s	@display        ; if not display warp effect
 		tst.b	(v_ost_player).w   ; is sonic still loaded ?
 		beq.s	@display    ; if yes  then display object
-		move.b	#0,(v_ost_player).w ; remove Sonic 
+		move.b	#0,(v_ost_player).w ; remove Sonic
 		sfx	sfx_Goal,0,0,0 ; play Special Stage "GOAL" sound
 
 	@display:

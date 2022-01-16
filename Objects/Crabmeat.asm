@@ -38,7 +38,7 @@ Crab_Main:	; Routine 0
 		addq.b	#2,ost_routine(a0)
 
 	@floornotfound:
-		rts	
+		rts
 ; ===========================================================================
 
 Crab_Action:	; Routine 2
@@ -76,7 +76,7 @@ Crab_Action:	; Routine 2
 
 	@dontmove:
 	@noflip:
-		rts	
+		rts
 ; ===========================================================================
 
 @fire:
@@ -102,7 +102,7 @@ Crab_Action:	; Routine 2
 		move.w	#$100,ost_x_vel(a1)
 
 	@failright:
-		rts	
+		rts
 ; ===========================================================================
 
 @walkonfloor:
@@ -123,7 +123,7 @@ loc_9640:
 		blt.s	loc_966E
 		cmpi.w	#$C,d1
 		bge.s	loc_966E
-		rts	
+		rts
 ; ===========================================================================
 
 loc_9654:
@@ -133,7 +133,7 @@ loc_9654:
 		bsr.w	Crab_SetAni
 		addq.b	#3,d0
 		move.b	d0,ost_anim(a0)
-		rts	
+		rts
 ; ===========================================================================
 
 loc_966E:
@@ -142,7 +142,7 @@ loc_966E:
 		move.w	#0,ost_x_vel(a0)
 		bsr.w	Crab_SetAni
 		move.b	d0,ost_anim(a0)
-		rts	
+		rts
 ; ---------------------------------------------------------------------------
 ; Subroutine to	set the	correct	animation for a	Crabmeat
 ; ---------------------------------------------------------------------------
@@ -162,7 +162,7 @@ Crab_SetAni:
 		moveq	#id_ani_crab_standsloperev,d0
 
 locret_96A2:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_96A4:
@@ -174,40 +174,40 @@ loc_96A4:
 		moveq	#id_ani_crab_standslope,d0
 
 locret_96B6:
-		rts	
+		rts
 ; End of function Crab_SetAni
 
 ; ===========================================================================
 
 Crab_Delete:	; Routine 4
 		bsr.w	DeleteObject
-		rts	
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Sub-object - missile that the	Crabmeat throws
 ; ---------------------------------------------------------------------------
 
 Crab_BallMain:	; Routine 6
-		addq.b	#2,ost_routine(a0)
+		addq.b	#2,ost_routine(a0) ; go to Crab_BallMove
 		move.l	#Map_Crab,ost_mappings(a0)
 		move.w	#tile_Nem_Crabmeat,ost_tile(a0)
 		move.b	#render_rel,ost_render(a0)
 		move.b	#3,ost_priority(a0)
 		move.b	#$87,ost_col_type(a0)
 		move.b	#8,ost_actwidth(a0)
-		move.w	#-$400,ost_y_vel(a0)
-		move.b	#id_ani_crab_ball,ost_anim(a0)
+		move.w	#-$400,ost_y_vel(a0)  ; set objects y vel
+		move.b	#id_ani_crab_ball,ost_anim(a0) ; set our animation to 'ball'
 
 Crab_BallMove:	; Routine 8
-		lea	(Ani_Crab).l,a1
+		lea	(Ani_Crab).l,a1   ; get ani script
 		bsr.w	AnimateSprite
 		bsr.w	ObjectFall
 		bsr.w	DisplaySprite
-		move.w	(v_limitbtm2).w,d0
+		move.w	(v_limitbtm2).w,d0  ; get level max y boundary 
 		addi.w	#$E0,d0
 		cmp.w	ost_y_pos(a0),d0 ; has object moved below the level boundary?
 		bcs.s	@delete		; if yes, branch
-		rts	
+		rts
 
 	@delete:
 		bra.w	DeleteObject
